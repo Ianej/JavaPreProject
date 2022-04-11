@@ -14,15 +14,22 @@ public class Util {
     private static final String PASSWORD = "12344321";
     private static Connection connection;
     private static Driver driver;//FabricMySQLDriver()
-    private static Statement statement;
+    //private static Statement statement;
+    //private static Util util;
+    private Util() throws SQLException {
+        //if(connection == null || connection.isClosed()) {
+            driver = DriverManager.getDriver(HOST);
+            DriverManager.registerDriver(driver);
+            connection = DriverManager.getConnection(HOST, USERNAME, PASSWORD);
+            System.out.println("Соединение с БД Установлено!");
+        //}if(util == nu)
+    }
+    private static void instance() throws SQLException {
+        if(connection == null || connection.isClosed()) new Util();
+    }
 
     public static Connection getConnection() throws SQLException {
-        if(connection == null) {
-                driver = DriverManager.getDriver(HOST);
-                DriverManager.registerDriver(driver);
-                connection = DriverManager.getConnection(HOST, USERNAME, PASSWORD);
-                System.out.println("Соединение с БД Установлено!");
-        }
+        instance();
         return connection;
     }
     /*public static Statement getStatement(){

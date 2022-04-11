@@ -15,11 +15,14 @@ public class Main {
     public static void main(String[] args) throws SQLException{
         // реализуйте алгоритм здесь
         Connection connection = Util.getConnection();
+        connection.close();
+        connection = Util.getConnection();
         //Statement statement = Util.getStatement();
         UserService userService = new UserServiceImpl();
         String[] name = {"Иван", "Пётр", "Сидор", "Фёдор"};
         String[] lastName = {"Иванов", "Петров", "Сидоров", "Фёдоров"};
         Random rnd = new Random();
+        userService.createUsersTable();
         for (int i = 0; i < 4; i++) {
             userService.saveUser(name[rnd.nextInt(4)], lastName[rnd.nextInt(4)], (byte) rnd.nextInt(120));
         }
