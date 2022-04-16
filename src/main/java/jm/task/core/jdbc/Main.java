@@ -17,15 +17,10 @@ public class Main {
         // реализуйте алгоритм здесь
         Session session = Util.getSession();
         session.close();
-        System.out.println("Соединение с БД Закрыто!");
+        System.out.println("Соединение с БД " + (session.isOpen() ? "НЕ закрыто!" : "Закрыто!"));
         session = Util.getSession();
         session.close();
-        System.out.println("Соединение с БД Закрыто!");
-/*
-        Connection connection = Util.getConnection();
-        connection.close();
-        connection = Util.getConnection();
-        //Statement statement = Util.getStatement();*/
+        System.out.println("Соединение с БД " + (session.isOpen() ? "НЕ закрыто!" : "Закрыто!"));
         UserService userService = new UserServiceImpl();
 
         String[] name = {"Иван", "Пётр", "Сидор", "Фёдор"};

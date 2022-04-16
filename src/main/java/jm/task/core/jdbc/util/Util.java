@@ -12,16 +12,7 @@ public class Util {
     private static final String HOST = "jdbc:mysql://localhost:3306/testdb";//? useTimezone = true & serverTimezone = UTC
     private static final String USERNAME = "root";
     private static final String PASSWORD = "12344321";
-    private static Driver driver;
-    static {
-        try {
-            driver = DriverManager.getDriver(HOST);
-            DriverManager.registerDriver(driver);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private static Connection connection;
+
     private static SessionFactory sessionFactory;
     static {
         Configuration cfg = new Configuration()
@@ -38,21 +29,22 @@ public class Util {
                 .addAnnotatedClass(User.class);
         sessionFactory = cfg.buildSessionFactory();
     }
-    private Util() throws SQLException {
-        connection = DriverManager.getConnection(HOST, USERNAME, PASSWORD);
-        System.out.println("JDBC cоединение с БД Установлено!");
+    public static Session session;
+    private Util() {
+        session = sessionFactory.openSession();
     }
     private static void instance() throws SQLException {
-        if(connection == null || connection.isClosed()) new Util();
+        if(session == null || !session.isOpen()) new Util();
+        System.out.println(session.isConnected() ? "Установлено!" : "Не установлено!");
     }
 
-    public static Connection getConnection() throws SQLException {
+    public static Session getSession() throws SQLException{
+        System.out.println("Hibernate cоединение с БД..." );
         instance();
-        return connection;
+        return session;
     }
 
-    public static Session getSession() {
-        System.out.println("Hibernate cоединение с БД Установлено!");
-        return sessionFactory.openSession();
+    public static Connection getConnection() {
+        return null;
     }
 }
